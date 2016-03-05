@@ -45,7 +45,7 @@ public class sheetmusicF extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/javauitest/pics/better.png"))); // NOI18N
         jLabel1.setText("jLabel1");
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Generate from clipboard");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -71,8 +71,8 @@ public class sheetmusicF extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(109, 109, 109)
-                .addComponent(jButton1)
-                .addContainerGap(143, Short.MAX_VALUE))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(132, Short.MAX_VALUE))
         );
 
         pack();
