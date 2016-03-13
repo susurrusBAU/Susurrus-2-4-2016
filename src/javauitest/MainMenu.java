@@ -43,7 +43,9 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import java.awt.Component;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import javax.swing.JScrollPane;
+import org.ini4j.Ini;
 import org.jfugue.DeviceThatWillTransmitMidi;
 import org.jfugue.MusicStringParser;
 import org.jfugue.Note;
@@ -80,8 +82,29 @@ public class MainMenu extends javax.swing.JFrame {
     private boolean Recording;
     boolean limitOctave=false;
     int limitOctaveAt=0;
+    Ini inif;
     public MainMenu(){
         initComponents();
+        try {
+            inif=new Ini();
+            inif.load(new FileReader("loadmidicont.ini"));
+            Ini.Section sec=inif.get("type");
+            String isAutoConnected=sec.get("autoc");
+            if(isAutoConnected=="1"){
+                ReconnecttoMid();
+                System.out.println("auto connected to midi");
+            }else{
+                System.out.println("Not auto-connected");
+                inif.put("type","autoc", 1);
+                inif.store();
+////                FileOutputStream fos=new FileOutputStream(new File("loadmidicont.ini"));
+////                inif.store(fos);
+            }
+            
+        }catch (IOException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        jSpinner2.setValue(4);
         TitledBorder title = BorderFactory.createTitledBorder("Free Mode Options");
         jPanel1.setBorder(title);
         
@@ -668,13 +691,12 @@ public class MainMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        if(MIDIConnected=false){
+        
             this.jLabel3.setEnabled(true);
             this.jSpinner2.setEnabled(true);
+            
             this.jButton15.setEnabled(true);
-            metro=new Metronome();
-            metro.start(60);
-        }
+        
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
@@ -909,10 +931,10 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-        if(this.limitOctave==true){
+       
             this.limitOctaveAt=(int) this.jSpinner2.getValue();
             this.limitOctave=true;
-        }
+        
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
@@ -1133,10 +1155,11 @@ public class MainMenu extends javax.swing.JFrame {
                 
                 
                 char noteT=note.getMusicString().charAt(0);
+                char noteP=' ';
                 if(limitOctave==true){
-                    ;
-                }
-                char noteP=note.getMusicString().charAt(1);
+                    noteP=(char) limitOctaveAt;
+                }else
+                    noteP=note.getMusicString().charAt(1);
                 g=(Graphics2D ) getGraphics ();
                 g.setColor(Color.black);
                 if(FreeMode==true){
@@ -1286,22 +1309,6 @@ public class MainMenu extends javax.swing.JFrame {
         try {
             dwm = new DeviceThatWillTransmitMidi(devices.get(1).getDeviceInfo());
             dwm.addParserListener(new GetInstrumentsUsedTool());
-            
-//            threadPlayer=new Thread(){
-//                boolean running=true;
-//                public void run() {
-//                    dwm.startListening();
-//                    
-//                    while(running);
-//                    dwm.stopListening();
-//                }
-//                
-//                public void setRunning(boolean bool){
-//                    running=bool;
-//                }
-//                
-//            };
-//            threadPlayer.start();
             p5=new Please5alesne (dwm);
             threadPlayer=new Thread(p5);
             threadPlayer.start();
