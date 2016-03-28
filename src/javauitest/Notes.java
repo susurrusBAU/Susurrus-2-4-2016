@@ -34,5 +34,11 @@ public class Notes {
             posy=92;
         }
     }
+    public Notes(char t,char p,int px,int py){
+        posx=px;
+        posy=py;
+        type=t;
+        octpos=p;
+    }
     
 }

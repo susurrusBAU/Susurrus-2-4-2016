@@ -1,4 +1,4 @@
-/*
+        /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -42,8 +42,11 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import java.awt.Component;
+import java.awt.event.WindowListener;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import org.ini4j.Ini;
 import org.jfugue.DeviceThatWillTransmitMidi;
@@ -57,7 +60,7 @@ import org.jfugue.Player;
  *
  * @author P
  */
-public class MainMenu extends javax.swing.JFrame {
+public class MainMenu extends javax.swing.JFrame implements WindowListener{
 
     /**
      * Creates new form MainMenu
@@ -65,7 +68,10 @@ public class MainMenu extends javax.swing.JFrame {
     
     boolean FreeMode=true;
     boolean Lesson1=false;
+    boolean Lesson2=false;
     public Please5alesne p5;
+    Notes savedNotes[];
+    int nbSavedNotes=0;
     DeviceThatWillTransmitMidi dwm;
     Pattern ptrn;
     public boolean MIDIConnected=false;
@@ -83,27 +89,15 @@ public class MainMenu extends javax.swing.JFrame {
     boolean limitOctave=false;
     int limitOctaveAt=0;
     Ini inif;
+    FileReader fr;
+    BufferedReader br;
     public MainMenu(){
         initComponents();
-        try {
-            inif=new Ini();
-            inif.load(new FileReader("loadmidicont.ini"));
-            Ini.Section sec=inif.get("type");
-            String isAutoConnected=sec.get("autoc");
-            if(isAutoConnected=="1"){
-                ReconnecttoMid();
-                System.out.println("auto connected to midi");
-            }else{
-                System.out.println("Not auto-connected");
-                inif.put("type","autoc", 1);
-                inif.store();
-////                FileOutputStream fos=new FileOutputStream(new File("loadmidicont.ini"));
-////                inif.store(fos);
-            }
-            
-        }catch (IOException ex) {
-            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
+        
+        
+        savedNotes=new Notes[26];
+        
         jSpinner2.setValue(4);
         TitledBorder title = BorderFactory.createTitledBorder("Free Mode Options");
         jPanel1.setBorder(title);
@@ -155,6 +149,21 @@ public class MainMenu extends javax.swing.JFrame {
 //            }
 //        }
 //        doc.close();
+        try {
+            fr=new FileReader("loadmidicont.txt");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        br=new BufferedReader(fr);
+        try {
+            String temp=br.readLine();
+            if(temp!="Nan"){
+                ReconnecttoMid(temp);
+                System.out.println("aaaaaaaaaaaaaaaaaa"+Integer.parseInt(temp));
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -206,8 +215,10 @@ public class MainMenu extends javax.swing.JFrame {
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
+        jButton17 = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -360,7 +371,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addComponent(jButton6)
                 .addGap(41, 41, 41)
                 .addComponent(jButton10)
-                .addContainerGap(218, Short.MAX_VALUE))
+                .addContainerGap(300, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -385,9 +396,12 @@ public class MainMenu extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(27, 27, 27)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -520,9 +534,9 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Info"));
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Record / Info"));
 
-        jLabel13.setText("Note:");
+        jLabel13.setText("NbSavedNotes");
 
         jLabel14.setText("###");
 
@@ -558,6 +572,13 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
+        jButton17.setText("Reset Sheets");
+        jButton17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton17ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -573,16 +594,18 @@ public class MainMenu extends javax.swing.JFrame {
                         .addComponent(jLabel15)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel16)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addContainerGap(454, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jButton11)
                         .addGap(18, 18, 18)
                         .addComponent(jButton12)
                         .addGap(18, 18, 18)
                         .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 246, Short.MAX_VALUE)
-                        .addComponent(jButton13)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton17)
+                        .addGap(22, 22, 22))))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -598,7 +621,8 @@ public class MainMenu extends javax.swing.JFrame {
                     .addComponent(jButton11)
                     .addComponent(jButton12)
                     .addComponent(jButton13)
-                    .addComponent(jButton14))
+                    .addComponent(jButton14)
+                    .addComponent(jButton17))
                 .addGap(19, 19, 19))
         );
 
@@ -612,7 +636,7 @@ public class MainMenu extends javax.swing.JFrame {
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addContainerGap(36, Short.MAX_VALUE)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 646, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -623,6 +647,9 @@ public class MainMenu extends javax.swing.JFrame {
                 .addComponent(jLabel7)
                 .addContainerGap(21, Short.MAX_VALUE))
         );
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel2.setText("Free Mode");
 
         jMenu1.setText("File");
 
@@ -661,12 +688,16 @@ public class MainMenu extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -682,7 +713,9 @@ public class MainMenu extends javax.swing.JFrame {
                     .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(96, 96, 96))
+                .addGap(9, 9, 9)
+                .addComponent(jLabel2)
+                .addGap(58, 58, 58))
         );
 
         jPanel1.getAccessibleContext().setAccessibleName("HeaderPanel");
@@ -801,16 +834,17 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        
-        
+        if(Lesson1==false || Lesson2==false){
+            FreeMode=false;
+        jLabel2.setText("Lesson Mode");
         LessonTest lt;
         g=(Graphics2D ) getGraphics ();
         g.setColor(Color.white);
         //this.jLabel7.hide();
         //g.fillRect(50, 345, 645, 207);
         
-        if(Lesson1==false){
-            Lesson1=true;
+        if(Lesson1==true){
+            Lesson1=false;
             int countertemp=41;
             g=(Graphics2D ) getGraphics ();
             g.setColor(Color.red);
@@ -851,12 +885,31 @@ public class MainMenu extends javax.swing.JFrame {
 //            g.fillOval((countertemp)*20,426,7,7);//d
             
             
-        }else{
-            ;
+        }else if(Lesson2==false){
+            Lesson2=true;
+            int countertemp=41;
+            g=(Graphics2D ) getGraphics ();
+            g.setColor(Color.red);
+            g.fillOval((countertemp)*20,432,7,7);//c
+            countertemp++;
+            g.fillOval((countertemp)*20,407,7,7);//g
+            countertemp++;
+            g.fillOval((countertemp)*20,420,7,7);//e
+            countertemp++;
+            g.fillOval((countertemp)*20,407,7,7);//g
+            countertemp++;
+            g.fillOval((countertemp)*20,432,7,7);//c
+            countertemp++;
+            g.fillOval((countertemp)*20,407,7,7);//g
+            countertemp++;
+            g.fillOval((countertemp)*20,420,7,7);//e
+            countertemp++;
+            g.fillOval((countertemp)*20,407,7,7);//g
+            countertemp++;
         }
         
         
-        
+        }
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
@@ -906,17 +959,12 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        g=(Graphics2D ) getGraphics ();
-        g.setColor(Color.white);
-        
-        g.fillRect(50, 345, 645, 207);
-        ImageIcon image = new ImageIcon(
-        getClass().getResource("better.png"));
-        //jLabel6.setIcon(image);
-        
         if(FreeMode==false){
+            ReDrawEverythingAndReset();
+            jLabel2.setText("Free Mode");
             FreeMode=true;
             Lesson1=false;
+            Lesson2=false;
         }
     }//GEN-LAST:event_jButton13ActionPerformed
 
@@ -927,6 +975,9 @@ public class MainMenu extends javax.swing.JFrame {
             ptrn=p5.dwm.getPatternFromListening();
             sheetmusicF ss=new sheetmusicF(ptrn);
             ss.setVisible(true);
+            ss.addWindowListener(this);
+            counter=7;
+            ReconnecttoMid();
         }
     }//GEN-LAST:event_jButton14ActionPerformed
 
@@ -940,6 +991,12 @@ public class MainMenu extends javax.swing.JFrame {
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton16ActionPerformed
+
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        if(FreeMode==true){
+            ReDrawEverythingAndReset();
+        }
+    }//GEN-LAST:event_jButton17ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -984,6 +1041,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
+    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1001,6 +1059,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1024,6 +1083,51 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JSpinner jSpinner2;
     private javax.swing.JSpinner jSpinner3;
     // End of variables declaration//GEN-END:variables
+
+    public void ReDrawEverythingAndReset(){
+        g.setColor(Color.white);
+        g.fillRect(50, 345, 635, 200);
+        g.fillRect(750, 345, 635, 200);
+        ImageIcon image = new ImageIcon(
+        getClass().getResource("better.png"));
+        jLabel6.setIcon(image);  
+        jLabel7.setIcon(image);
+    }
+    
+    @Override
+    public void windowOpened(WindowEvent e) {
+        ;
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        ;
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        System.out.println("CLOSING WINDOW COPY");
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+        ;
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        ;
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        ;
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        ;
+    }
 
     
     public class ToastMessage extends JDialog {
@@ -1105,8 +1209,10 @@ public class MainMenu extends javax.swing.JFrame {
 //            counter++;
             char NoteType=note.getMusicString().charAt(0);
             char NotePos=note.getMusicString().charAt(1);          
-            jLabel14.setText(""+NoteType);
-            jLabel16.setText(""+NotePos);
+            //jLabel14.setText(""+NoteType);
+//            jLabel14.setText(""+nbSavedNotes);
+//            //jLabel16.setText(""+NotePos);
+//            jLabel16.setText(""+counter);
             //if(note.getDuration()==0.0)
                // try {
                     //DrawNotes(NoteType,NotePos);
@@ -1120,7 +1226,7 @@ public class MainMenu extends javax.swing.JFrame {
         @Override
         public void instrumentEvent(org.jfugue.Instrument instrument)
         {
-            System.out.println(instrument.toString());
+            //System.out.println(instrument.toString());
         
         }
 
@@ -1156,57 +1262,127 @@ public class MainMenu extends javax.swing.JFrame {
                 
                 char noteT=note.getMusicString().charAt(0);
                 char noteP=' ';
-                if(limitOctave==true){
-                    noteP=(char) limitOctaveAt;
-                }else
-                    noteP=note.getMusicString().charAt(1);
                 g=(Graphics2D ) getGraphics ();
                 g.setColor(Color.black);
-                if(FreeMode==true){
+                if(limitOctave==true){
+                    noteP=(char) limitOctaveAt;
+                    
+                    
+                }else
+                    noteP=note.getMusicString().charAt(1);
+                
+                if(FreeMode==true){//number of notes less than 26
+                    
+                    System.out.println("Number of saved notes: "+nbSavedNotes+"\nCounter: "+counter);
+                    
                     if(noteT=='C'){
                         if(noteP=='4'){
                             g.setColor(Color.red);
                             g.drawLine(counter*20-5, 445, counter*20+10, 445);
                             g.setColor(Color.black);
+                            
                             g.fillOval(counter*20,442,7,7);
-
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,442);
+                            nbSavedNotes++;
                         }else if(noteP=='5'){
                             g.fillOval(counter*20,393,7,7);
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,393);
+                            nbSavedNotes++;
                         }
                     }else if(noteT=='D'){
                         if(noteP=='4'){
                             g.fillOval(counter*20,435,7,7);
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,435);
+                            nbSavedNotes++;
                         } else if(noteP=='5'){
                             g.fillOval(counter*20,386,7,7);
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,386);
+                            nbSavedNotes++;
                         }
                     }else if(noteT=='E'){
                         if(noteP=='4'){
                             g.fillOval(counter*20,428,7,7);
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,428);
+                            nbSavedNotes++;
                         }else if(noteP=='5'){
                             g.fillOval(counter*20,379,7,7);
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,379);
+                            nbSavedNotes++;
                         }
                     }else if(noteT=='F'){
                         if(noteP=='4'){
                             g.fillOval(counter*20,421,7,7);
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,421);
+                            nbSavedNotes++;
                         }else if(noteP=='5'){
                             g.fillOval(counter*20,372,7,7);
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,372);
+                            nbSavedNotes++;
                         }
                     }else if(noteT=='G'){
                         if(noteP=='4'){
                             g.fillOval(counter*20,414,7,7);
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,414);
+                            nbSavedNotes++;
                         }else if(noteP=='5'){
                             g.fillOval(counter*20,366,7,7);
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,366);
+                            nbSavedNotes++;
                         }
                     }else if(noteT=='A'){
                         if(noteP=='4'){
                             g.fillOval(counter*20,407,7,7);
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,407);
+                            nbSavedNotes++;
                         }
                     }else if(noteT=='B'){
                         if(noteP=='4'){
                             g.fillOval(counter*20,400,7,7);
+                            int counterpre=counter-1;
+                            savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,400);
+                            nbSavedNotes++;
                         }
                     }
                 }
+                if(counter==33){
+                        
+                        g.setColor(Color.white);
+                        g.fillRect(50, 345, 635, 200);
+                    ImageIcon image = new ImageIcon(
+                    getClass().getResource("better.png"));
+                    jLabel6.setIcon(image);   
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    counter=32;
+                    
+                    g.setColor(Color.black);
+                    int temp=7;
+                    for(int i=1;i<nbSavedNotes;i++){
+                        g.fillOval(savedNotes[i].posx*temp,savedNotes[i].posy,7,7);
+                        temp++;
+                    }
+                    for(int i=0;i<nbSavedNotes-1;i++){
+                        savedNotes[i]=savedNotes[i+1];
+                    }
+                     nbSavedNotes=25;   
+                    }
+                
+                jLabel14.setText(""+nbSavedNotes);
+            jLabel16.setText(""+counter);
                 if(Lesson1==true){
                     g.setColor(Color.green);
                     if(counterL==41){
@@ -1308,6 +1484,41 @@ public class MainMenu extends javax.swing.JFrame {
             DeviceThatWillTransmitMidi dwm;
         try {
             dwm = new DeviceThatWillTransmitMidi(devices.get(1).getDeviceInfo());
+            dwm.addParserListener(new GetInstrumentsUsedTool());
+            p5=new Please5alesne (dwm);
+            threadPlayer=new Thread(p5);
+            threadPlayer.start();
+            System.out.println("reached");
+            MIDIConnected=true;
+        } catch (MidiUnavailableException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void ReconnecttoMid(String pos){
+        MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
+        for (int i = 0; i < infos.length; i++) {
+            try {
+            devices.add(MidiSystem.getMidiDevice(infos[i]));
+            devices.get(i).open();
+            System.out.println(infos[i]);
+            List<Transmitter> transmitters = devices.get(i).getTransmitters();
+            for(int j = 0; j<transmitters.size();j++) {
+                transmitters.get(j).setReceiver(
+                        new MainMenu.MidiInputReceiver(devices.get(i).getDeviceInfo().toString())
+                );
+            }
+            if(devices.get(i).isOpen()){
+                System.out.println(devices.get(i).getDeviceInfo()+" Was Opened");
+                
+            }
+            }catch (MidiUnavailableException e) {System.out.println("Error");}
+            
+        }
+        
+            DeviceThatWillTransmitMidi dwm;
+        try {
+            dwm = new DeviceThatWillTransmitMidi(devices.get(Integer.parseInt(pos)).getDeviceInfo());
             dwm.addParserListener(new GetInstrumentsUsedTool());
             p5=new Please5alesne (dwm);
             threadPlayer=new Thread(p5);
