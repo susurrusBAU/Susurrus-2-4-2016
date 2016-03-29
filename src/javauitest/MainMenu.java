@@ -46,6 +46,7 @@ import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import javauitest.UIMain.UserLogin;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import org.ini4j.Ini;
@@ -91,10 +92,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     Ini inif;
     FileReader fr;
     BufferedReader br;
+    private UserLogin ul;
     public MainMenu(){
         initComponents();
-        
-        
         
         savedNotes=new Notes[26];
         
@@ -159,7 +159,6 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             String temp=br.readLine();
             if(temp!="Nan"){
                 ReconnecttoMid(temp);
-                System.out.println("aaaaaaaaaaaaaaaaaa"+Integer.parseInt(temp));
             }
         } catch (IOException ex) {
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
@@ -371,7 +370,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                 .addComponent(jButton6)
                 .addGap(41, 41, 41)
                 .addComponent(jButton10)
-                .addContainerGap(300, Short.MAX_VALUE))
+                .addContainerGap(293, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,12 +395,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(27, 27, 27)))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -636,7 +632,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
-                .addContainerGap(36, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 646, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -687,8 +683,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -812,13 +807,10 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        this.jLabel12.setEnabled(true);
-        this.jButton7.setEnabled(true);
-        this.jButton8.setEnabled(true);
-        this.jButton9.setEnabled(true);
-        this.jButton3.hide();
-        this.jButton4.hide();
-        this.jLabel5.hide();
+        ul=new UserLogin();
+        ul.setVisible(true);
+        ul.addWindowListener(this);
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
@@ -1101,7 +1093,17 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
 
     @Override
     public void windowClosing(WindowEvent e) {
-        ;
+        if(ul.getLogedin()==true){
+            this.jLabel12.setEnabled(true);
+            this.jButton7.setEnabled(true);
+            this.jButton8.setEnabled(true);
+            this.jButton9.setEnabled(true);
+            this.jButton3.hide();
+            this.jButton4.hide();
+            this.jLabel5.hide();
+        }else{
+            ;
+        }
     }
 
     @Override
