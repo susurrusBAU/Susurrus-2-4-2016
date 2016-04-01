@@ -17,8 +17,8 @@ import java.util.logging.Logger;
  */
 public class UserLogin extends javax.swing.JFrame {
 
-    public boolean Logedin=false;
-    
+    public boolean LogedinUser=false;
+    public boolean LogedinPass=false;
     // JDBC driver name and database URL
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
    static final String DB_URL = "jdbc:mysql://localhost/";
@@ -31,7 +31,7 @@ public class UserLogin extends javax.swing.JFrame {
    Statement stmt = null;
     
     public boolean getLogedin(){
-        return Logedin;
+        return (LogedinUser && LogedinPass);
     }
     public UserLogin() {
         initComponents();
@@ -139,14 +139,14 @@ public class UserLogin extends javax.swing.JFrame {
        
       //STEP 3: Open a connection
       System.out.println("Connecting to database...");
-      conn=DriverManager.getConnection("jdbc:mysql://localhost/students","root","root");
+      conn=DriverManager.getConnection("jdbc:mysql://localhost/susurrus1","root","root");
       //conn = DriverManager.getConnection(DB_URL, USER, PASS);
        
       //STEP 4: Execute a query
       System.out.println("Creating database...");
       stmt = conn.createStatement();
       
-      String sql = "select * from student_id;";
+      String sql = "select * from users;";
      
       ResultSet rs=stmt.executeQuery(sql);
       /////////////////HOW TO GET THE RESULT QUERY
@@ -157,13 +157,16 @@ public class UserLogin extends javax.swing.JFrame {
             if (i > 1) System.out.print(",  ");
             String columnValue = rs.getString(i);
             System.out.print(columnValue + " " + rsmd.getColumnName(i));
-            if(columnValue.equals(jTextField1.getText())){
-                Logedin=true;
-                System.out.println("LOGGED IN");
+            if(columnValue.equals(jTextField1.getText())&&rsmd.getColumnName(i).equals("user_id")){
+                LogedinUser=true;
+            }
+            if(rsmd.getColumnName(i).equals("password") && columnValue.equals(jTextField2.getText())){
+                LogedinPass=true;
             }
     }
     System.out.println("");
-    if(Logedin==true){
+    if(getLogedin()){
+        System.out.println(getLogedin());
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
     ///////////////////////////////////////////////
