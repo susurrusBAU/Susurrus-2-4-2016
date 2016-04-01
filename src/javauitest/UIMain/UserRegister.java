@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javauitest.MainMenu;
 
 /**
  *
@@ -16,7 +17,8 @@ import java.util.logging.Logger;
  */
 public class UserRegister extends javax.swing.JFrame {
     int lastLessonID=-1;
-       public boolean LogedinUser=true;
+    int lastScoreID=-1;
+       public boolean Logedin=true;
     // JDBC driver name and database URL
    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
    static final String DB_URL = "jdbc:mysql://localhost/";
@@ -27,6 +29,10 @@ public class UserRegister extends javax.swing.JFrame {
    
    Connection conn = null;
    Statement stmt = null;
+     
+   public boolean getLogedin(){
+       return Logedin;
+   }
     public UserRegister() {
         initComponents();
     }
@@ -55,15 +61,15 @@ public class UserRegister extends javax.swing.JFrame {
 
         jLabel1.setText("Name:");
 
-        jTextField1.setText("jTextField1");
+        jTextField1.setText("sawsan");
 
         jLabel2.setText("Username:");
 
-        jTextField2.setText("jTextField1");
+        jTextField2.setText("sawsan");
 
         jLabel3.setText("Password:");
 
-        jTextField3.setText("jTextField1");
+        jTextField3.setText("asd");
 
         jButton1.setText("Register");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -77,24 +83,25 @@ public class UserRegister extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(97, 97, 97)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(97, 97, 97)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2))
+                        .addGap(36, 36, 36))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(57, 57, 57)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                        .addComponent(jTextField3)))
                 .addGap(0, 20, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(68, 68, 68)
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,7 +130,7 @@ public class UserRegister extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(74, 74, 74)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(154, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,7 +169,7 @@ public class UserRegister extends javax.swing.JFrame {
                 String columnValue = rs.getString(i);
                 System.out.print(columnValue + " " + rsmd.getColumnName(i));
             if(columnValue.equals(jTextField2.getText())&&rsmd.getColumnName(i).equals("user_id")){
-                LogedinUser=false;
+                Logedin=false;
             }   
         }
         }
@@ -186,7 +193,7 @@ public class UserRegister extends javax.swing.JFrame {
     
     
     public void OtherStuff(){
-        if(LogedinUser==true){
+        if(Logedin==true){
          try {
             //STEP 2: Register JDBC driver
             Class.forName("com.mysql.jdbc.Driver");
@@ -213,10 +220,34 @@ public class UserRegister extends javax.swing.JFrame {
                 }
         }
         }
+        sql = "select * from leaderboard;";
+        rs=stmt.executeQuery(sql);
+        rsmd=rs.getMetaData();
+        columnsNumber = rsmd.getColumnCount();
+        while (rs.next()) {
+        for (int i = 1; i <= columnsNumber; i++) {
+            if (i > 1) System.out.print(",  ");
+                String columnValue = rs.getString(i);
+                System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                if(rsmd.getColumnName(i).equals("score_id")){
+                    lastScoreID=Integer.parseInt(columnValue);
+                }
+        }
+        }
         
         lastLessonID++;
+        lastScoreID++;
         sql="insert into leaderboard(scores) values (0);";
         stmt.executeUpdate(sql);
+             System.out.println("--->DONE INSERTING INTO LEADERBOARD");
+        sql="insert into lessons(song_id,tone,difficulty) values (1,\"A\",2);";
+        stmt.executeUpdate(sql);
+             System.out.println("SHOULD BE INSERTING "+lastLessonID+" AND "+lastScoreID);
+        sql="insert into users(lesson_id,score_id,user_id,password,name) values ("+lastLessonID+","+
+                lastScoreID+",'"+jTextField2.getText()+"','"+jTextField3.getText()+"','"+jTextField1.getText()+"');";
+        //sql="insert into users(lesson_id,score_id,user_id,password,name) values (1,1,'sawsa','sawsa','asd');";
+        stmt.executeUpdate(sql);
+             System.out.println("DONE INSERTING INTO USERS");
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(UserRegister.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
@@ -228,6 +259,7 @@ public class UserRegister extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(UserLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
+            this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }   
         }
     }
@@ -274,4 +306,8 @@ public class UserRegister extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
+
+    public void addWindowListener(MainMenu aThis, int i) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

@@ -139,7 +139,7 @@ public class UserLogin extends javax.swing.JFrame {
        
       //STEP 3: Open a connection
       System.out.println("Connecting to database...");
-      conn=DriverManager.getConnection("jdbc:mysql://localhost/susurrus1","root","root");
+      conn=DriverManager.getConnection("jdbc:mysql://localhost/susurrus5","root","root");
       //conn = DriverManager.getConnection(DB_URL, USER, PASS);
        
       //STEP 4: Execute a query

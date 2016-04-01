@@ -48,6 +48,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import javauitest.DatabaseSus.Reg1;
 import javauitest.UIMain.UserLogin;
+import javauitest.UIMain.UserRegister;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import org.ini4j.Ini;
@@ -94,6 +95,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     FileReader fr;
     BufferedReader br;
     private UserLogin ul;
+    private UserRegister ur;
     public MainMenu(){
         initComponents();
         savedNotes=new Notes[26];
@@ -1027,7 +1029,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     }//GEN-LAST:event_jButton17ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Reg1 r1=new Reg1();
+        ur=new UserRegister();
+       ur.setVisible(true);
+       ur.addWindowListener(this);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
@@ -1135,17 +1139,26 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
 
     @Override
     public void windowClosing(WindowEvent e) {
-        if(ul.getLogedin()==true){
-            this.jLabel12.setEnabled(true);
-            this.jButton7.setEnabled(true);
-            this.jButton8.setEnabled(true);
-            this.jButton9.setEnabled(true);
-            this.jButton3.hide();
-            this.jButton4.hide();
-            this.jLabel5.hide();
-        }else{
-            ;
+        if(e.getSource() instanceof UserLogin){
+            if(ul.getLogedin()==true){
+                ShowSignedinOptions();
+            }
+        }else if(e.getSource() instanceof UserRegister){
+            if(ur.getLogedin()==true){
+                ShowSignedinOptions();
+            }
         }
+
+    }
+    
+    public void ShowSignedinOptions(){
+        this.jLabel12.setEnabled(true);
+        this.jButton7.setEnabled(true);
+        this.jButton8.setEnabled(true);
+        this.jButton9.setEnabled(true);
+        this.jButton3.hide();
+        this.jButton4.hide();
+        this.jLabel5.hide();
     }
 
     @Override
