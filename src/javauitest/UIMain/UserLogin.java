@@ -61,11 +61,14 @@ public class UserLogin extends javax.swing.JFrame {
 
         jLabel2.setText("Password");
 
+        jTextField1.setText("bassel");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
             }
         });
+
+        jTextField2.setText("asd");
 
         jButton1.setText("Login");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

@@ -68,7 +68,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     /**
      * Creates new form MainMenu
      */
-    
+    int NBerrors=0;
+    boolean Lesson1ErrPos[];
+    boolean Lesson2ErrPos[];
     boolean FreeMode=true;
     boolean Lesson1=false;
     boolean Lesson2=false;
@@ -872,9 +874,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         g.setColor(Color.white);
         //this.jLabel7.hide();
         //g.fillRect(50, 345, 645, 207);
-        
+        Lesson1=true;
         if(Lesson1==true){
-            Lesson1=false;
+            Lesson1ErrPos=new boolean[14];
             int countertemp=41;
             g=(Graphics2D ) getGraphics ();
             g.setColor(Color.red);
@@ -908,15 +910,10 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             g.fillOval((countertemp)*20,432,7,7);//c
             countertemp++;
             
-//            g.fillOval((countertemp)*20,420,7,7);//e
-//            countertemp++;
-//            g.fillOval((countertemp)*20,420,7,7);//e
-//            countertemp++;
-//            g.fillOval((countertemp)*20,426,7,7);//d
             
-            
-        }else if(Lesson2==false){
+        }else if(Lesson2==true){
             Lesson2=true;
+            Lesson2ErrPos=new boolean[8];
             int countertemp=41;
             g=(Graphics2D ) getGraphics ();
             g.setColor(Color.red);
@@ -995,6 +992,8 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             FreeMode=true;
             Lesson1=false;
             Lesson2=false;
+            counter=7;
+            counterL=41;
         }
     }//GEN-LAST:event_jButton13ActionPerformed
 
@@ -1025,6 +1024,8 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
         if(FreeMode==true){
             ReDrawEverythingAndReset();
+            counter=7;
+            counterL=41;
         }
     }//GEN-LAST:event_jButton17ActionPerformed
 
@@ -1263,6 +1264,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
 //            //jta.append(note.getDuration()+"<-----new------\n");
 //            //p.play(note.getMusicString());
 //            }
+            
 //            counter++;
             char NoteType=note.getMusicString().charAt(0);
             char NotePos=note.getMusicString().charAt(1);          
@@ -1307,7 +1309,8 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         public void run() {
             
             if(note.getDuration()==0.0){
-                counter++;
+                if(FreeMode==true)
+                    counter++;
                 Player p=new Player();
                 Pattern ptr=new Pattern();
                 note.setDecimalDuration(0.3);
@@ -1441,46 +1444,122 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                 jLabel14.setText(""+nbSavedNotes);
             jLabel16.setText(""+counter);
                 if(Lesson1==true){
+                    
                     g.setColor(Color.green);
                     if(counterL==41){
                         if(noteT=='C' && noteP=='4'){
                             g.fillOval((counterL)*20,432,7,7);
                             counterL++;
+                        }else{
+                            NBerrors++;
                         }
                     }else if(counterL==42){
                         if(noteT=='C' && noteP=='4'){
                             g.fillOval((counterL)*20,432,7,7);
                             counterL++;
+                        }else{
+                            NBerrors++;
                         }
                     }else if(counterL==43){
-                        if(noteT=='D' && noteP=='4'){
-                            g.fillOval((counterL)*20,426,7,7);
+                        if(noteT=='G' && noteP=='4'){
+                            g.fillOval((counterL)*20,407,7,7);//g
                             counterL++;
+                        }else{
+                            NBerrors++;
                         }
                     }else if(counterL==44){
-                        if(noteT=='D' && noteP=='4'){
-                            g.fillOval((counterL)*20,426,7,7);
+                        if(noteT=='G' && noteP=='4'){
+                            g.fillOval((counterL)*20,407,7,7);//g
                             counterL++;
+                        }else{
+                            NBerrors++;
                         }
                     }else if(counterL==45){
-                        if(noteT=='E' && noteP=='4'){
-                            g.fillOval((counterL)*20,418,7,7);
+                        if(noteT=='A' && noteP=='4'){
+                            g.fillOval((counterL)*20,400,7,7);//a
                             counterL++;
+                        }else{
+                            NBerrors++;
                         }
                     }else if(counterL==46){
-                        if(noteT=='E' && noteP=='4'){
-                            g.fillOval((counterL)*20,418,7,7);
+                        if(noteT=='A' && noteP=='4'){
+                            g.fillOval((counterL)*20,400,7,7);//a
                             counterL++;
+                        }else{
+                            NBerrors++;
                         }
                     }else if(counterL==47){
-                        if(noteT=='D' && noteP=='4'){
-                            g.fillOval((counterL)*20,426,7,7);
+                        if(noteT=='G' && noteP=='4'){
+                            g.fillOval((counterL)*20,407,7,7);//g
                             counterL++;
+                        }else{
+                            NBerrors++;
+                        }
+                    }else if(counterL==48){
+                        if(noteT=='F' && noteP=='4'){
+                            g.fillOval((counterL)*20,413,7,7);//f
+                            counterL++;
+                        }else{
+                            NBerrors++;
+                        }
+                    }else if(counterL==49){
+                        if(noteT=='F' && noteP=='4'){
+                            g.fillOval((counterL)*20,413,7,7);//f
+                            counterL++;
+                        }else{
+                            NBerrors++;
+                        }
+                    }else if(counterL==50){
+                        if(noteT=='E' && noteP=='4'){
+                            g.fillOval((counterL)*20,420,7,7);//e
+                            counterL++;
+                        }else{
+                            NBerrors++;
+                        }
+                    }else if(counterL==51){
+                        if(noteT=='E' && noteP=='4'){
+                            g.fillOval((counterL)*20,420,7,7);//e
+                            counterL++;
+                        }else{
+                            NBerrors++;
+                        }
+                    }else if(counterL==52){
+                        if(noteT=='D' && noteP=='4'){
+                            g.fillOval((counterL)*20,426,7,7);//d
+                            counterL++;
+                        }else{
+                            NBerrors++;
+                        }
+                    }else if(counterL==53){
+                        if(noteT=='D' && noteP=='4'){
+                            g.fillOval((counterL)*20,426,7,7);//d
+                            counterL++;
+                        }else{
+                            NBerrors++;
+                        }
+                    }else if(counterL==54){
+                        if(noteT=='C' && noteP=='4'){
+                            g.fillOval((counterL)*20,432,7,7);
+                            counterL++;
+                        }else{
+                            NBerrors++;
+                        }
+                    }
+                    
+                }
+                p.play(ptr);
+                if(Lesson1==true){
+                    if(counterL==55){
+                        try {
+                            Thread.sleep(100);
+                            
+                            JOptionPane.showMessageDialog(null, "complete, with "+NBerrors+" errors.", "InfoBox: " , JOptionPane.INFORMATION_MESSAGE);
+                            NBerrors=0;
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                 }
-                p.play(ptr);
-                
 //                int pos=Integer.getInteger(""+note.getMusicString().charAt(1))+1;
 //                String toplay=note.getMusicString().charAt(0)+String.valueOf(pos);
 //                p.play(toplay);
