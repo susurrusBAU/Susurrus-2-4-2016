@@ -46,11 +46,13 @@ import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.TimerTask;
 import javauitest.DatabaseSus.Reg1;
 import javauitest.UIMain.UserLogin;
 import javauitest.UIMain.UserRegister;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import java.util.Timer;
 import org.ini4j.Ini;
 import org.jfugue.DeviceThatWillTransmitMidi;
 import org.jfugue.MusicStringParser;
@@ -64,16 +66,20 @@ import org.jfugue.Player;
  * @author P
  */
 public class MainMenu extends javax.swing.JFrame implements WindowListener{
-
-    /**
-     * Creates new form MainMenu
-     */
+    int timePassed=0;
+    int minPasses=0;
+    Timer myTimer=new Timer();
+    
+    ArrayList <Integer>al;
+    int NotePosetions[]=new int[7];
     int NBerrors=0;
     boolean Lesson1ErrPos[];
     boolean Lesson2ErrPos[];
     boolean FreeMode=true;
     boolean Lesson1=false;
     boolean Lesson2=false;
+    boolean LessonCustom=false;
+    int customLessonSize=0;
     public Please5alesne p5;
     Notes savedNotes[];
     int nbSavedNotes=0;
@@ -98,8 +104,19 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     BufferedReader br;
     private UserLogin ul;
     private UserRegister ur;
+    String customSheet[];
     public MainMenu(){
         initComponents();
+        NotePosetions[0]=432;
+        NotePosetions[1]=426;
+        NotePosetions[2]=420;
+        NotePosetions[3]=413;
+        NotePosetions[4]=407;
+        NotePosetions[5]=400;
+        NotePosetions[6]=394;
+        
+        this.setTitle("Susurrus");
+        al=new <Integer>ArrayList();
         savedNotes=new Notes[26];
         
         jSpinner2.setValue(4);
@@ -205,25 +222,26 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
-        jButton16 = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
         jButton11 = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
         jButton13 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
         jButton17 = new javax.swing.JButton();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jButton18 = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -445,28 +463,24 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             }
         });
 
-        jButton7.setText("Lessons");
-        jButton7.setEnabled(false);
+        jButton7.setText("Twinkle twinkle");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
             }
         });
 
-        jButton8.setText("Tools");
-        jButton8.setEnabled(false);
-
-        jButton9.setText("Others");
-        jButton9.setEnabled(false);
-
-        jLabel12.setText("Please select an option");
-        jLabel12.setEnabled(false);
-
-        jButton16.setText("Tutorial");
-        jButton16.setEnabled(false);
-        jButton16.addActionListener(new java.awt.event.ActionListener() {
+        jButton8.setText("Contentment");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton16ActionPerformed(evt);
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jButton9.setText("Chant Arabe");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
             }
         });
 
@@ -477,45 +491,36 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel12)
+                    .addComponent(jButton8)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton7)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(12, 12, 12)
+                            .addComponent(jButton9))
+                        .addGap(29, 29, 29)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(16, 16, 16)
                                 .addComponent(jButton3)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton4))))
-                    .addComponent(jButton16))
+                                .addComponent(jButton4)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(4, 4, 4)
-                .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addComponent(jButton7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton16)
-                .addGap(5, 5, 5)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton3)
-                            .addComponent(jButton4)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton9)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton8)
+                .addGap(19, 19, 19)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jButton9))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(jButton4))
                 .addContainerGap(28, Short.MAX_VALUE))
         );
 
@@ -542,14 +547,6 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         );
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("Record / Info"));
-
-        jLabel13.setText("NbSavedNotes");
-
-        jLabel14.setText("###");
-
-        jLabel15.setText("Octave:");
-
-        jLabel16.setText("###");
 
         jButton11.setText("Record");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
@@ -586,6 +583,17 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             }
         });
 
+        jLabel17.setText("0:0");
+
+        jLabel18.setText("Time:");
+
+        jButton18.setText("Import Lesson");
+        jButton18.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton18ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -594,42 +602,39 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
+                        .addGap(245, 245, 245)
+                        .addComponent(jLabel18)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel14)
-                        .addGap(45, 45, 45)
-                        .addComponent(jLabel15)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel16)
-                        .addContainerGap(454, Short.MAX_VALUE))
+                        .addComponent(jLabel17))
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jButton11)
                         .addGap(18, 18, 18)
                         .addComponent(jButton12)
                         .addGap(18, 18, 18)
                         .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(58, 58, 58)
                         .addComponent(jButton13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton17)
-                        .addGap(22, 22, 22))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton18)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel15)
-                    .addComponent(jLabel16))
+                    .addComponent(jLabel17)
+                    .addComponent(jLabel18))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton11)
                     .addComponent(jButton12)
                     .addComponent(jButton13)
                     .addComponent(jButton14)
-                    .addComponent(jButton17))
+                    .addComponent(jButton17)
+                    .addComponent(jButton18))
                 .addGap(19, 19, 19))
         );
 
@@ -677,6 +682,14 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
+        jLabel13.setText("NbSavedNotes");
+
+        jLabel14.setText("###");
+
+        jLabel15.setText("Octave:");
+
+        jLabel16.setText("###");
+
         jMenu1.setText("File");
 
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/javauitest/pics/gear39.png"))); // NOI18N
@@ -721,7 +734,16 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel14))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel16)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -748,7 +770,15 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(140, 140, 140)
+                        .addGap(49, 49, 49)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel14))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel15)
+                            .addComponent(jLabel16))
+                        .addGap(45, 45, 45)
                         .addComponent(jLabel2)
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
@@ -865,9 +895,140 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         }
     }//GEN-LAST:event_jButton10ActionPerformed
 
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        if(MIDIConnected==true && jButton11.getText()=="Record"){
+            p5.setRunning(false);
+            this.threadPlayer.interrupt();
+            p5.dwm.stopListening();
+            Recording=true;
+            this.ReconnecttoMid();
+            ToastMessage tm=new ToastMessage("Recording...",3000);
+            tm.setVisible(true);
+            myTimer.schedule(new TimerTask(){
+                @Override
+                public void run(){
+                    timePassed++;
+                    jLabel17.setText(minPasses+":"+timePassed);
+                    if(timePassed==59){
+                        minPasses++;
+                        timePassed=-1;
+                    }
+                }
+                
+            },1000,1000);
+            jButton11.setText("Stop");
+        }else if(MIDIConnected==true && jButton11.getText()=="Stop"){
+            myTimer.cancel();
+            Recording=false;
+            p5.dwm.stopListening();
+            this.ReconnecttoMid();
+            ptrn=p5.dwm.getPatternFromListening();
+            Player plr=new Player();
+            this.jButton11.setText("Record");
+            jLabel17.setText("0:0");
+            
+        }
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        if(MIDIConnected==true){
+            p5.dwm.stopListening();
+            
+            ptrn=p5.dwm.getPatternFromListening();
+            Player plr=new Player();
+            Recording=false;
+            JFileChooser chooser = new JFileChooser(); 
+            chooser.setCurrentDirectory(new java.io.File("."));
+            String choosertitle="test";
+            chooser.setDialogTitle(choosertitle);
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            
+            chooser.setAcceptAllFileFilterUsed(false);
+            //    
+            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+              System.out.println("getCurrentDirectory(): " 
+                 +  chooser.getCurrentDirectory());
+              System.out.println("getSelectedFile() : " 
+                 +  chooser.getSelectedFile());
+              }
+            try {
+                plr.saveMidi(ptrn, new File(chooser.getSelectedFile()+"\\Test.mid"));
+            } catch (IOException ex) {
+                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.ReconnecttoMid();
+            ToastMessage tm=new ToastMessage(""+chooser.getSelectedFile(),3000);
+            tm.setVisible(true);
+        }else{
+            ToastMessage tm=new ToastMessage("Please connect to MIDI controller",3000);
+            tm.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        if(FreeMode==false){
+            ReDrawEverythingAndReset();
+            jLabel2.setText("Free Mode");
+            FreeMode=true;
+            Lesson1=false;
+            Lesson2=false;
+            counter=7;
+            counterL=41;
+        }
+    }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        if(MIDIConnected==true){
+            if(Recording==false){
+                sheetmusicF ss=new sheetmusicF(ptrn);
+                ss.setVisible(true);
+                ss.addWindowListener(this);
+                counter=7;
+                ReconnecttoMid();
+            
+            }else{
+                p5.dwm.stopListening();
+
+                ptrn=p5.dwm.getPatternFromListening();
+                sheetmusicF ss=new sheetmusicF(ptrn);
+                ss.setVisible(true);
+                ss.addWindowListener(this);
+                counter=7;
+                ReconnecttoMid();
+            }
+        }
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+       
+            this.limitOctaveAt=(int) this.jSpinner2.getValue();
+            this.limitOctave=true;
+        
+    }//GEN-LAST:event_jButton15ActionPerformed
+
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        if(FreeMode==true){
+            ReDrawEverythingAndReset();
+            counter=7;
+            counterL=41;
+        }
+    }//GEN-LAST:event_jButton17ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        ur=new UserRegister();
+       ur.setVisible(true);
+       ur.addWindowListener(this);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        if(Lesson1==false || Lesson2==false){
+        
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
             FreeMode=false;
+            Lesson2=false;
         jLabel2.setText("Lesson Mode");
         LessonTest lt;
         g=(Graphics2D ) getGraphics ();
@@ -911,130 +1072,84 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             countertemp++;
             
             
-        }else if(Lesson2==true){
-            Lesson2=true;
-            Lesson2ErrPos=new boolean[8];
-            int countertemp=41;
-            g=(Graphics2D ) getGraphics ();
-            g.setColor(Color.red);
-            g.fillOval((countertemp)*20,432,7,7);//c
-            countertemp++;
-            g.fillOval((countertemp)*20,407,7,7);//g
-            countertemp++;
-            g.fillOval((countertemp)*20,420,7,7);//e
-            countertemp++;
-            g.fillOval((countertemp)*20,407,7,7);//g
-            countertemp++;
-            g.fillOval((countertemp)*20,432,7,7);//c
-            countertemp++;
-            g.fillOval((countertemp)*20,407,7,7);//g
-            countertemp++;
-            g.fillOval((countertemp)*20,420,7,7);//e
-            countertemp++;
-            g.fillOval((countertemp)*20,407,7,7);//g
-            countertemp++;
-        }
-        
         
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        p5.setRunning(false);
-        this.threadPlayer.interrupt();
-        p5.dwm.stopListening();
-        Recording=true;
-        this.ReconnecttoMid();
-        ToastMessage tm=new ToastMessage("Recording...",3000);
-        tm.setVisible(true);
-        
-    }//GEN-LAST:event_jButton11ActionPerformed
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        if(MIDIConnected==true){
-            p5.dwm.stopListening();
-            
-            ptrn=p5.dwm.getPatternFromListening();
-            Player plr=new Player();
-            
-            JFileChooser chooser = new JFileChooser(); 
-            chooser.setCurrentDirectory(new java.io.File("."));
-            String choosertitle="test";
-            chooser.setDialogTitle(choosertitle);
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            
-            chooser.setAcceptAllFileFilterUsed(false);
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
+        JFileChooser chooser = new JFileChooser(); 
+        chooser.setCurrentDirectory(new java.io.File("C:\\Users\\P\\Desktop\\lel"));
+        String choosertitle="Choose Sheet Music";
+        chooser.setDialogTitle(choosertitle);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.setLocation(0, 10);
+        chooser.setAcceptAllFileFilterUsed(false);
+        FreeMode=false;
+        LessonCustom=true;
             //    
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
-              System.out.println("getCurrentDirectory(): " 
+                System.out.println("getCurrentDirectory(): " 
                  +  chooser.getCurrentDirectory());
               System.out.println("getSelectedFile() : " 
                  +  chooser.getSelectedFile());
-              }
             try {
-                plr.saveMidi(ptrn, new File(chooser.getSelectedFile()+"\\Test.mid"));
+                fr=new FileReader(chooser.getSelectedFile());
+                br=new BufferedReader(fr);
+                int s=Integer.parseInt(br.readLine());
+                customSheet=new String[s];
+                customLessonSize=s;
+                for(int i=0;i<s;i++){
+                    customSheet[i]=br.readLine();
+                    System.out.println(customSheet[i]);
+                }
+                DrawOnLesson(customSheet,s);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
             }
-            this.ReconnecttoMid();
-            ToastMessage tm=new ToastMessage(""+chooser.getSelectedFile(),3000);
-            tm.setVisible(true);
-        }else{
-            ToastMessage tm=new ToastMessage("Please connect to MIDI controller",3000);
-            tm.setVisible(true);
+            }
+    }//GEN-LAST:event_jButton18ActionPerformed
+    
+    public void DrawOnLesson(String s[],int size){
+        int countertemp=41;
+        g=(Graphics2D ) getGraphics ();
+        g.setColor(Color.red);
+        for(int i=0;i<size;i++){
+            g.fillOval((countertemp)*20,ReturnNotepos(s, i),7,7);
+            System.out.println("Drawing at "+countertemp*20+", "+ReturnNotepos(s, i));
+            countertemp++;
         }
-    }//GEN-LAST:event_jButton12ActionPerformed
-
-    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        if(FreeMode==false){
-            ReDrawEverythingAndReset();
-            jLabel2.setText("Free Mode");
-            FreeMode=true;
-            Lesson1=false;
-            Lesson2=false;
-            counter=7;
-            counterL=41;
-        }
-    }//GEN-LAST:event_jButton13ActionPerformed
-
-    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
-        if(MIDIConnected==true){
-            p5.dwm.stopListening();
-            
-            ptrn=p5.dwm.getPatternFromListening();
-            sheetmusicF ss=new sheetmusicF(ptrn);
-            ss.setVisible(true);
-            ss.addWindowListener(this);
-            counter=7;
-            ReconnecttoMid();
-        }
-    }//GEN-LAST:event_jButton14ActionPerformed
-
-    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-       
-            this.limitOctaveAt=(int) this.jSpinner2.getValue();
-            this.limitOctave=true;
         
-    }//GEN-LAST:event_jButton15ActionPerformed
-
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton16ActionPerformed
-
-    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
-        if(FreeMode==true){
-            ReDrawEverythingAndReset();
-            counter=7;
-            counterL=41;
+        //c
+    }
+    
+    public int ReturnNotepos(String s[],int i){
+        if(s[i].equals("C")){
+            return NotePosetions[0];
+        }else if(s[i].equals("D")){
+            return NotePosetions[1];
+        }if(s[i].equals("E")){
+            return NotePosetions[2];
+        }if(s[i].equals("F")){
+            return NotePosetions[3];
+        }if(s[i].equals("G")){
+            return NotePosetions[4];
+        }if(s[i].equals("A")){
+            return NotePosetions[5];
+        }if(s[i].equals("B")){
+            return NotePosetions[6];
         }
-    }//GEN-LAST:event_jButton17ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        ur=new UserRegister();
-       ur.setVisible(true);
-       ur.addWindowListener(this);
-    }//GEN-LAST:event_jButton4ActionPerformed
-
+        return 0;
+    }
     /**
      * @param args the command line arguments
      */
@@ -1077,8 +1192,8 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
+    private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1091,11 +1206,12 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1124,6 +1240,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     // End of variables declaration//GEN-END:variables
 
     public void ReDrawEverythingAndReset(){
+        g=(Graphics2D ) getGraphics ();
         g.setColor(Color.white);
         g.fillRect(50, 345, 635, 200);
         g.fillRect(750, 345, 635, 200);
@@ -1131,6 +1248,8 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         getClass().getResource("better.png"));
         jLabel6.setIcon(image);  
         jLabel7.setIcon(image);
+        counter=7;
+        
     }
     
     @Override
@@ -1153,10 +1272,6 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     }
     
     public void ShowSignedinOptions(){
-        this.jLabel12.setEnabled(true);
-        this.jButton7.setEnabled(true);
-        this.jButton8.setEnabled(true);
-        this.jButton9.setEnabled(true);
         this.jButton3.hide();
         this.jButton4.hide();
         this.jLabel5.hide();
@@ -1306,9 +1421,13 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             note=n;
         }
         @Override
-        public void run() {
+        public void run(){
             
             if(note.getDuration()==0.0){
+                if(counter>33){
+                    whenItIsGreaterthanThirtyThree();
+                    ReconnecttoMid();
+                }
                 if(FreeMode==true)
                     counter++;
                 Player p=new Player();
@@ -1336,6 +1455,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                     System.out.println("Number of saved notes: "+nbSavedNotes+"\nCounter: "+counter);
                     DrawOnKeyboard(noteT);
                     if(noteT=='C'){
+                        ImageIcon image = new ImageIcon(
+        getClass().getResource("pics/key3.png"));
+                        jLabel4.setIcon(image);
                         if(noteP=='4'){
                             g.setColor(Color.red);
                             g.drawLine(counter*20-5, 445, counter*20+10, 445);
@@ -1346,12 +1468,16 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             nbSavedNotes++;
                             
                         }else if(noteP=='5'){
+                            
                             g.fillOval(counter*20,393,7,7);
                             int counterpre=counter-1;
                             savedNotes[nbSavedNotes]=new Notes(noteT,noteP,20,393);
                             nbSavedNotes++;
                         }
                     }else if(noteT=='D'){
+                        ImageIcon image = new ImageIcon(
+        getClass().getResource("pics/key5.png"));
+                        jLabel4.setIcon(image);
                         if(noteP=='4'){
                             g.fillOval(counter*20,435,7,7);
                             int counterpre=counter-1;
@@ -1364,6 +1490,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             nbSavedNotes++;
                         }
                     }else if(noteT=='E'){
+                        ImageIcon image = new ImageIcon(
+        getClass().getResource("pics/key7.png"));
+                        jLabel4.setIcon(image);
                         if(noteP=='4'){
                             g.fillOval(counter*20,428,7,7);
                             int counterpre=counter-1;
@@ -1376,6 +1505,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             nbSavedNotes++;
                         }
                     }else if(noteT=='F'){
+                        ImageIcon image = new ImageIcon(
+        getClass().getResource("pics/key8.png"));
+                        jLabel4.setIcon(image);
                         if(noteP=='4'){
                             g.fillOval(counter*20,421,7,7);
                             int counterpre=counter-1;
@@ -1388,6 +1520,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             nbSavedNotes++;
                         }
                     }else if(noteT=='G'){
+                        ImageIcon image = new ImageIcon(
+        getClass().getResource("pics/key10.png"));
+                        jLabel4.setIcon(image);
                         if(noteP=='4'){
                             g.fillOval(counter*20,414,7,7);
                             int counterpre=counter-1;
@@ -1400,6 +1535,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             nbSavedNotes++;
                         }
                     }else if(noteT=='A'){
+                        ImageIcon image = new ImageIcon(
+        getClass().getResource("pics/key12.png"));
+                        jLabel4.setIcon(image);
                         if(noteP=='4'){
                             g.fillOval(counter*20,407,7,7);
                             int counterpre=counter-1;
@@ -1407,6 +1545,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             nbSavedNotes++;
                         }
                     }else if(noteT=='B'){
+                        ImageIcon image = new ImageIcon(
+        getClass().getResource("pics/key14.png"));
+                        jLabel4.setIcon(image);
                         if(noteP=='4'){
                             g.fillOval(counter*20,400,7,7);
                             int counterpre=counter-1;
@@ -1441,8 +1582,8 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                      nbSavedNotes=25;   
                     }
                 
-                jLabel14.setText(""+nbSavedNotes);
-            jLabel16.setText(""+counter);
+                jLabel14.setText(""+noteT);
+                jLabel16.setText(""+noteP);
                 if(Lesson1==true){
                     
                     g.setColor(Color.green);
@@ -1452,6 +1593,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==42){
                         if(noteT=='C' && noteP=='4'){
@@ -1459,6 +1601,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==43){
                         if(noteT=='G' && noteP=='4'){
@@ -1466,6 +1609,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==44){
                         if(noteT=='G' && noteP=='4'){
@@ -1473,6 +1617,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==45){
                         if(noteT=='A' && noteP=='4'){
@@ -1480,6 +1625,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==46){
                         if(noteT=='A' && noteP=='4'){
@@ -1487,6 +1633,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==47){
                         if(noteT=='G' && noteP=='4'){
@@ -1494,6 +1641,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==48){
                         if(noteT=='F' && noteP=='4'){
@@ -1501,6 +1649,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==49){
                         if(noteT=='F' && noteP=='4'){
@@ -1508,6 +1657,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==50){
                         if(noteT=='E' && noteP=='4'){
@@ -1515,6 +1665,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==51){
                         if(noteT=='E' && noteP=='4'){
@@ -1522,6 +1673,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==52){
                         if(noteT=='D' && noteP=='4'){
@@ -1529,6 +1681,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==53){
                         if(noteT=='D' && noteP=='4'){
@@ -1536,6 +1689,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }else if(counterL==54){
                         if(noteT=='C' && noteP=='4'){
@@ -1543,8 +1697,24 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             counterL++;
                         }else{
                             NBerrors++;
+                            al.add(counterL-41);
                         }
                     }
+                    
+                }else if(LessonCustom==true){
+                    g.setColor(Color.green);
+                        //System.out.println(customSheet[41-counterL]+", "+noteT);   
+                        if(customSheet[counterL-41].equals(noteT+"")){
+                            g.fillOval((counterL)*20,ReturnNotepos(customSheet,counterL-41),7,7);
+                            System.out.println("Correct");
+                            counterL++;
+                            SwitchPicUI(customSheet[counterL-41]);
+                        }else{
+                            System.out.println("wrong");
+                            NBerrors++;
+                            al.add(counterL-41);
+                        }
+                         
                     
                 }
                 p.play(ptr);
@@ -1553,8 +1723,13 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                         try {
                             Thread.sleep(100);
                             
-                            JOptionPane.showMessageDialog(null, "complete, with "+NBerrors+" errors.", "InfoBox: " , JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "complete, with "+NBerrors+" errors."+al.size(), "InfoBox: " , JOptionPane.INFORMATION_MESSAGE);
+                            for(int i=0;i<al.size();i++){
+                                System.out.print(al.get(i)+",");
+                            }
+                            ReDrawEverythingAndReset();
                             NBerrors=0;
+                            counterL=41;
                         } catch (InterruptedException ex) {
                             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -1671,8 +1846,40 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         g.setColor(Color.black);
         if(p=='C'){
             g.fillOval(800, 710, 7, 7);
-        }else if(p=='D'){
+         }else if(p=='D'){
             g.fillOval(860, 710, 7, 7);
         }
+    }
+    
+    public void whenItIsGreaterthanThirtyThree(){
+        counter=7;
+        ReDrawEverythingAndReset();
+    }
+    
+    public void SwitchPicUI(String pos){
+        ImageIcon image = null;
+        if(pos.equals("C")){
+            image= new ImageIcon(
+           getClass().getResource("pics/key3.png"));
+        }else if(pos.equals("D")){
+            image= new ImageIcon(
+           getClass().getResource("pics/key5.png"));
+        }else if(pos.equals("E")){
+            image= new ImageIcon(
+           getClass().getResource("pics/key7.png"));
+        }else if(pos.equals("F")){
+            image= new ImageIcon(
+           getClass().getResource("pics/key8.png"));
+        }else if(pos.equals("G")){
+            image= new ImageIcon(
+           getClass().getResource("pics/key10.png"));
+        }else if(pos.equals("A")){
+            image= new ImageIcon(
+           getClass().getResource("pics/key12.png"));
+        }else if(pos.equals("B")){
+            image= new ImageIcon(
+           getClass().getResource("pics/key14.png"));
+        }
+        jLabel4.setIcon(image);
     }
 }
