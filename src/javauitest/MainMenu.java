@@ -79,6 +79,8 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     boolean Lesson1=false;
     boolean Lesson2=false;
     boolean LessonCustom=false;
+    boolean customelevelfinish=false;
+    int customlessoni=0;
     int customLessonSize=0;
     public Please5alesne p5;
     Notes savedNotes[];
@@ -464,6 +466,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         });
 
         jButton7.setText("Twinkle twinkle");
+        jButton7.setEnabled(false);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -471,6 +474,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         });
 
         jButton8.setText("Contentment");
+        jButton8.setEnabled(false);
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -478,6 +482,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         });
 
         jButton9.setText("Chant Arabe");
+        jButton9.setEnabled(false);
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
@@ -1031,43 +1036,82 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             Lesson2=false;
         jLabel2.setText("Lesson Mode");
         LessonTest lt;
+        customSheet=new String[14];
+        customLessonSize=14;
         g=(Graphics2D ) getGraphics ();
         g.setColor(Color.white);
         //this.jLabel7.hide();
         //g.fillRect(50, 345, 645, 207);
-        Lesson1=true;
-        if(Lesson1==true){
+        LessonCustom=true;
+        if(LessonCustom==true){
             Lesson1ErrPos=new boolean[14];
             int countertemp=41;
             g=(Graphics2D ) getGraphics ();
             g.setColor(Color.red);
+            int i=0;
+            customSheet[i]="C";
+            i++;
+            g.setColor(Color.black);
+            g.drawLine(countertemp*20-5, 435, countertemp*20+10, 435);
+            g.setColor(Color.red);
             g.fillOval((countertemp)*20,432,7,7);//c
             countertemp++;
+            customSheet[i]="C";
+            i++;
+            g.setColor(Color.black);
+            g.drawLine(countertemp*20-5, 435, countertemp*20+10, 435);
+            g.setColor(Color.red);
             g.fillOval((countertemp)*20,432,7,7);//c
             countertemp++;
-            
+            customSheet[i]="G";
+            i++;
             g.fillOval((countertemp)*20,407,7,7);//g
             countertemp++;
+            customSheet[i]="G";
+            i++;
             g.fillOval((countertemp)*20,407,7,7);//g
             countertemp++;
+            customSheet[i]="A";
+            i++;
             g.fillOval((countertemp)*20,400,7,7);//a
             countertemp++;
+            customSheet[i]="A";
+            i++;
             g.fillOval((countertemp)*20,400,7,7);//a
             countertemp++;
+            customSheet[i]="G";
+            i++;
             g.fillOval((countertemp)*20,407,7,7);//g
             countertemp++;
+            customSheet[i]="F";
+            i++;
             g.fillOval((countertemp)*20,413,7,7);//f
             countertemp++;
+            customSheet[i]="F";
+            i++;
             g.fillOval((countertemp)*20,413,7,7);//f
             countertemp++;
+            customSheet[i]="E";
+            i++;
             g.fillOval((countertemp)*20,420,7,7);//e
             countertemp++;
+            customSheet[i]="E";
+            i++;
             g.fillOval((countertemp)*20,420,7,7);//e
-            countertemp++;            
+            countertemp++;   
+            customSheet[i]="D";
+            i++;
             g.fillOval((countertemp)*20,426,7,7);//d
             countertemp++;
+            customSheet[i]="D";
+            i++;
             g.fillOval((countertemp)*20,426,7,7);//d
             countertemp++;
+            customSheet[i]="C";
+            i++;
+            g.setColor(Color.black);
+            g.drawLine(countertemp*20-5, 435, countertemp*20+10, 435);
+            g.setColor(Color.red);
             g.fillOval((countertemp)*20,432,7,7);//c
             countertemp++;
             
@@ -1118,6 +1162,8 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             }
             }
     }//GEN-LAST:event_jButton18ActionPerformed
+    
+    
     
     public void DrawOnLesson(String s[],int size){
         int countertemp=41;
@@ -1272,6 +1318,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     }
     
     public void ShowSignedinOptions(){
+        jButton7.setEnabled(true);
         this.jButton3.hide();
         this.jButton4.hide();
         this.jLabel5.hide();
@@ -1585,7 +1632,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                 jLabel14.setText(""+noteT);
                 jLabel16.setText(""+noteP);
                 if(Lesson1==true){
-                    
+                    SwitchPicUI(noteT+"");
                     g.setColor(Color.green);
                     if(counterL==41){
                         if(noteT=='C' && noteP=='4'){
@@ -1708,7 +1755,15 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                             g.fillOval((counterL)*20,ReturnNotepos(customSheet,counterL-41),7,7);
                             System.out.println("Correct");
                             counterL++;
+                            customlessoni++;
                             SwitchPicUI(customSheet[counterL-41]);
+                            if(customLessonSize-1==customlessoni){
+                                
+                                customelevelfinish=true;
+                                ReDrawEverythingAndReset();
+                                counter=7;
+                                counterL=41;
+                            }
                         }else{
                             System.out.println("wrong");
                             NBerrors++;
@@ -1718,8 +1773,10 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                     
                 }
                 p.play(ptr);
-                if(Lesson1==true){
-                    if(counterL==55){
+                if(customelevelfinish==true){
+                        customelevelfinish=false;
+                        FreeMode=true;
+                        LessonCustom=false;
                         try {
                             Thread.sleep(100);
                             
@@ -1733,7 +1790,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                         } catch (InterruptedException ex) {
                             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                    }
+                    
                 }
 //                int pos=Integer.getInteger(""+note.getMusicString().charAt(1))+1;
 //                String toplay=note.getMusicString().charAt(0)+String.valueOf(pos);
