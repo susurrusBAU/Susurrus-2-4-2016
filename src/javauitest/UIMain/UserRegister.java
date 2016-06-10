@@ -25,7 +25,7 @@ public class UserRegister extends javax.swing.JFrame {
 
    //  Database credentials
    static final String USER = "root";
-   static final String PASS = "root";
+   static final String PASS = "";
    
    Connection conn = null;
    Statement stmt = null;
@@ -151,7 +151,7 @@ public class UserRegister extends javax.swing.JFrame {
 
             //STEP 3: Open a connection
             System.out.println("Connecting to database...");
-            conn=DriverManager.getConnection("jdbc:mysql://localhost/susurrus5","root","root");
+            conn=DriverManager.getConnection("jdbc:mysql://localhost/susurrus1","root","");
             //conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             //STEP 4: Execute a query
@@ -200,7 +200,7 @@ public class UserRegister extends javax.swing.JFrame {
 
             //STEP 3: Open a connection
             System.out.println("Connecting to database...");
-            conn=DriverManager.getConnection("jdbc:mysql://localhost/susurrus5","root","root");
+            conn=DriverManager.getConnection("jdbc:mysql://localhost/susurrus1","root","");
             //conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
             //STEP 4: Execute a query
@@ -237,14 +237,14 @@ public class UserRegister extends javax.swing.JFrame {
         
         lastLessonID++;
         lastScoreID++;
-        sql="insert into leaderboard(scores) values (0);";
+        sql="insert into leaderboards(LEADERBOARD_SCORE) values (0);";
         stmt.executeUpdate(sql);
              System.out.println("--->DONE INSERTING INTO LEADERBOARD");
-        sql="insert into lessons(song_id,tone,difficulty) values (1,\"A\",2);";
+        sql="insert into lessons(SONG_ID,LESSON_TONE,LESSON_DIFFICULTY) values (1,\"A\",2);";
         stmt.executeUpdate(sql);
              System.out.println("SHOULD BE INSERTING "+lastLessonID+" AND "+lastScoreID);
-        sql="insert into users(lesson_id,score_id,user_id,password,name) values ("+lastLessonID+","+
-                lastScoreID+",'"+jTextField2.getText()+"','"+jTextField3.getText()+"','"+jTextField1.getText()+"');";
+        sql="insert into users(LESSON_ID,LEADERBOARD_ID,USER_NAME,USER_PASSWORD) values ("+lastLessonID+","+
+                lastScoreID+",'"+jTextField2.getText()+"','"+jTextField3.getText()+"');";
         //sql="insert into users(lesson_id,score_id,user_id,password,name) values (1,1,'sawsa','sawsa','asd');";
         stmt.executeUpdate(sql);
              System.out.println("DONE INSERTING INTO USERS");

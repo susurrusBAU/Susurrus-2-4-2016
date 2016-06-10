@@ -80,6 +80,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     boolean Lesson2=false;
     boolean LessonCustom=false;
     boolean customelevelfinish=false;
+    boolean loggedin=false;
     int customlessoni=0;
     int customLessonSize=0;
     public Please5alesne p5;
@@ -121,7 +122,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         al=new <Integer>ArrayList();
         savedNotes=new Notes[26];
         
-        jSpinner2.setValue(4);
+        
         TitledBorder title = BorderFactory.createTitledBorder("Free Mode Options");
         jPanel1.setBorder(title);
         
@@ -198,13 +199,6 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jSeparator2 = new javax.swing.JSeparator();
-        jButton2 = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        jSpinner2 = new javax.swing.JSpinner();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jButton15 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
@@ -253,68 +247,6 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Freemode Options", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         jPanel1.setName("HeaderPanel"); // NOI18N
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Keyboard"));
-
-        jSeparator2.setOrientation(javax.swing.SwingConstants.VERTICAL);
-
-        jButton2.setText("Reset");
-
-        jLabel3.setText("Octave Limit");
-        jLabel3.setEnabled(false);
-
-        jSpinner2.setEnabled(false);
-
-        jRadioButton2.setText("Off");
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton15.setText("Set limit");
-        jButton15.setEnabled(false);
-        jButton15.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton15ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(8, 8, 8)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jRadioButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton15)
-                .addGap(0, 10, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jRadioButton2)
-                        .addComponent(jButton15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
-                .addContainerGap())
-        );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Metronome"));
 
@@ -396,7 +328,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                 .addComponent(jButton6)
                 .addGap(41, 41, 41)
                 .addComponent(jButton10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(119, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -420,10 +352,8 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 516, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -441,9 +371,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(180, 180, 180))
         );
 
@@ -687,7 +615,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        jLabel13.setText("NbSavedNotes");
+        jLabel13.setText("Note type:");
 
         jLabel14.setText("###");
 
@@ -793,15 +721,6 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        
-            this.jLabel3.setEnabled(true);
-            this.jSpinner2.setEnabled(true);
-            
-            this.jButton15.setEnabled(true);
-        
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
-
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
         if(MIDIConnected=false){
             this.jLabel10.setEnabled(true);
@@ -901,7 +820,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        if(MIDIConnected==true && jButton11.getText()=="Record"){
+        if(MIDIConnected==true && jButton11.getText()=="Record" && loggedin==true){
             p5.setRunning(false);
             this.threadPlayer.interrupt();
             p5.dwm.stopListening();
@@ -928,7 +847,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
             p5.dwm.stopListening();
             this.ReconnecttoMid();
             ptrn=p5.dwm.getPatternFromListening();
-            Player plr=new Player();
+            
             this.jButton11.setText("Record");
             jLabel17.setText("0:0");
             
@@ -1004,19 +923,15 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         }
     }//GEN-LAST:event_jButton14ActionPerformed
 
-    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-       
-            this.limitOctaveAt=(int) this.jSpinner2.getValue();
-            this.limitOctave=true;
-        
-    }//GEN-LAST:event_jButton15ActionPerformed
-
     private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
-        if(FreeMode==true){
+        
             ReDrawEverythingAndReset();
             counter=7;
             counterL=41;
-        }
+            LessonCustom=false;
+            FreeMode=true;
+            
+        
     }//GEN-LAST:event_jButton17ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -1129,38 +1044,43 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
-        JFileChooser chooser = new JFileChooser(); 
-        chooser.setCurrentDirectory(new java.io.File("C:\\Users\\P\\Desktop\\lel"));
-        String choosertitle="Choose Sheet Music";
-        chooser.setDialogTitle(choosertitle);
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setLocation(0, 10);
-        chooser.setAcceptAllFileFilterUsed(false);
-        FreeMode=false;
-        LessonCustom=true;
-            //    
-            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
-                System.out.println("getCurrentDirectory(): " 
-                 +  chooser.getCurrentDirectory());
-              System.out.println("getSelectedFile() : " 
-                 +  chooser.getSelectedFile());
-            try {
-                fr=new FileReader(chooser.getSelectedFile());
-                br=new BufferedReader(fr);
-                int s=Integer.parseInt(br.readLine());
-                customSheet=new String[s];
-                customLessonSize=s;
-                for(int i=0;i<s;i++){
-                    customSheet[i]=br.readLine();
-                    System.out.println(customSheet[i]);
+     if(loggedin==true){   
+            JFileChooser chooser = new JFileChooser(); 
+            chooser.setCurrentDirectory(new java.io.File("C:\\Users\\P\\Desktop\\lel"));
+            String choosertitle="Choose Sheet Music";
+            chooser.setDialogTitle(choosertitle);
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            chooser.setLocation(0, 10);
+            chooser.setAcceptAllFileFilterUsed(false);
+            FreeMode=false;
+            LessonCustom=true;
+                //    
+                if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
+                    System.out.println("getCurrentDirectory(): " 
+                     +  chooser.getCurrentDirectory());
+                  System.out.println("getSelectedFile() : " 
+                     +  chooser.getSelectedFile());
+                try {
+                    fr=new FileReader(chooser.getSelectedFile());
+                    br=new BufferedReader(fr);
+                    int s=Integer.parseInt(br.readLine());
+                    customSheet=new String[s];
+                    customLessonSize=s;
+                    for(int i=0;i<s;i++){
+                        customSheet[i]=br.readLine();
+                        System.out.println(customSheet[i]);
+                    }
+                    DrawOnLesson(customSheet,s);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                DrawOnLesson(customSheet,s);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            }
+                }
+    }else{
+         ToastMessage tm=new ToastMessage("Please Login first",3000);
+        tm.setVisible(true);
+     }
     }//GEN-LAST:event_jButton18ActionPerformed
     
     
@@ -1237,10 +1157,8 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
-    private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -1259,7 +1177,6 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1272,16 +1189,12 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSpinner jSpinner2;
     private javax.swing.JSpinner jSpinner3;
     // End of variables declaration//GEN-END:variables
 
@@ -1294,6 +1207,9 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         getClass().getResource("better.png"));
         jLabel6.setIcon(image);  
         jLabel7.setIcon(image);
+        image = new ImageIcon(
+        getClass().getResource("key2.png"));
+        jLabel4.setIcon(image);
         counter=7;
         
     }
@@ -1308,10 +1224,12 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
         if(e.getSource() instanceof UserLogin){
             if(ul.getLogedin()==true){
                 ShowSignedinOptions();
+                loggedin=true;
             }
         }else if(e.getSource() instanceof UserRegister){
             if(ur.getLogedin()==true){
                 ShowSignedinOptions();
+                loggedin=true;
             }
         }
 
@@ -1496,7 +1414,7 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                     
                 }else
                     noteP=note.getMusicString().charAt(1);
-                
+                    System.out.println("MUSIC STRING: "+note.getMusicString());
                 if(FreeMode==true){//number of notes less than 26
                     
                     System.out.println("Number of saved notes: "+nbSavedNotes+"\nCounter: "+counter);
@@ -1751,18 +1669,22 @@ public class MainMenu extends javax.swing.JFrame implements WindowListener{
                 }else if(LessonCustom==true){
                     g.setColor(Color.green);
                         //System.out.println(customSheet[41-counterL]+", "+noteT);   
-                        if(customSheet[counterL-41].equals(noteT+"")){
+                        if(customSheet[counterL-41].equals(noteT+"")&& noteP!='#'){
                             g.fillOval((counterL)*20,ReturnNotepos(customSheet,counterL-41),7,7);
                             System.out.println("Correct");
+                            
                             counterL++;
                             customlessoni++;
-                            SwitchPicUI(customSheet[counterL-41]);
-                            if(customLessonSize-1==customlessoni){
+                            System.out.println(counterL-41);
+                            
+                            if(customLessonSize==customlessoni ){
                                 
                                 customelevelfinish=true;
                                 ReDrawEverythingAndReset();
                                 counter=7;
                                 counterL=41;
+                            }else{
+                                SwitchPicUI(customSheet[counterL-41]);
                             }
                         }else{
                             System.out.println("wrong");

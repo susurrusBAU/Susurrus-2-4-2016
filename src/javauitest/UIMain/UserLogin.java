@@ -6,6 +6,9 @@
 package javauitest.UIMain;
 
 import java.awt.event.WindowEvent;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +28,7 @@ public class UserLogin extends javax.swing.JFrame {
 
    //  Database credentials
    static final String USER = "root";
-   static final String PASS = "root";
+   static final String PASS = "";
    
    Connection conn = null;
    Statement stmt = null;
@@ -50,8 +53,8 @@ public class UserLogin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -68,12 +71,17 @@ public class UserLogin extends javax.swing.JFrame {
             }
         });
 
-        jTextField2.setText("asd");
-
         jButton1.setText("Login");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jTextField2.setText("123");
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
             }
         });
 
@@ -82,19 +90,19 @@ public class UserLogin extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(105, 105, 105)
+                .addComponent(jButton1)
+                .addContainerGap(130, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                    .addComponent(jTextField2))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(105, 105, 105)
-                .addComponent(jButton1)
-                .addContainerGap(130, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,16 +111,13 @@ public class UserLogin extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(69, 69, 69)
+                .addGap(22, 22, 22)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(64, 64, 64)
                 .addComponent(jButton1)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -142,7 +147,7 @@ public class UserLogin extends javax.swing.JFrame {
        
       //STEP 3: Open a connection
       System.out.println("Connecting to database...");
-      conn=DriverManager.getConnection("jdbc:mysql://localhost/susurrus5","root","root");
+      conn=DriverManager.getConnection("jdbc:mysql://localhost/susurrus1","root","");
       //conn = DriverManager.getConnection(DB_URL, USER, PASS);
        
       //STEP 4: Execute a query
@@ -159,13 +164,32 @@ public class UserLogin extends javax.swing.JFrame {
         for (int i = 1; i <= columnsNumber; i++) {
             if (i > 1) System.out.print(",  ");
             String columnValue = rs.getString(i);
-            System.out.print(columnValue + " " + rsmd.getColumnName(i));
-            if(columnValue.equals(jTextField1.getText())&&rsmd.getColumnName(i).equals("user_id")){
+            //System.out.print(columnValue + " " + rsmd.getColumnName(i));
+                
+            if(rsmd.getColumnName(i).equals("USER_NAME"))
+                if(columnValue.equals(jTextField1.getText())){
                 LogedinUser=true;
+                System.out.println(rsmd.getColumnName(i)+"<--------rsmd--------");
+                System.out.println(columnValue+"<--------cv--------");
+                System.out.println(jTextField1.getText()+"<-----jtext1-----------");
+                System.out.println("LOGGED IN USERNAME");
             }
-            if(rsmd.getColumnName(i).equals("password") && columnValue.equals(jTextField2.getText())){
+            MessageDigest md5=null;
+            try {
+                md5=MessageDigest.getInstance("MD5");
+                md5.update(jTextField2.getText().getBytes(),0,jTextField2.getText().length());
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(UserLogin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(rsmd.getColumnName(i).equals("USER_PASSWORD"))
+                if(columnValue.equals(new BigInteger(1,md5.digest()).toString(16))){
                 LogedinPass=true;
+                System.out.println(rsmd.getColumnName(i)+"<--------rsmd--------");
+                System.out.println(columnValue+"<--------cv--------");
+                System.out.println(jTextField1.getText()+"<-----jtext1-----------");
+                System.out.println("LOGGED IN USERNAME");
             }
+            
     }
     System.out.println("");
     if(getLogedin()){
@@ -192,6 +216,10 @@ public class UserLogin extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
      * @param args the command line arguments
